@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Answer;
 use App\Models\Form;
+use App\Models\Lead;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,11 +22,6 @@ class SiteController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
-    {
-        //
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -39,8 +35,15 @@ class SiteController extends Controller
     public function viewForms()
     {
         $id = Auth::user()->getAuthIdentifier();
-        $forms = Form::query()->where('user_id', $id)->get();
-        return view('viewForms' ,['forms' => $forms]);
+        $forms = Form::query()->where('user_id', $id)->paginate(2);
+        return view('viewForms', ['forms' => $forms]);
+    }
+
+    public function viewLeads()
+    {
+        $id = Auth::user()->getAuthIdentifier();
+        $forms = Form::query()->where('user_id', $id)->paginate(2);
+        return view('viewLeads' ,['forms' => $forms]);
     }
 
     /**
@@ -75,7 +78,7 @@ class SiteController extends Controller
                 if (!isset($questionItem['name'])) {
                     continue;
                 }
-                $answersData = $questionItem['answers'];
+                //$answersData = $questionItem['answers'];
                 /**
                  * @var Question $question
                  */
@@ -87,12 +90,13 @@ class SiteController extends Controller
                         ]
                     );
                 }
-                $preparedAnswerData = array_map(function ($value) {
-                    return ['answer' => $value['answer']];
-                }, $answersData);
-                if (count($preparedAnswerData)) {
-                    $question->answers()->createMany($preparedAnswerData);
-                }
+                $question->save();
+//                $preparedAnswerData = array_map(function ($value) {
+//                    return ['answer' => $value['answer']];
+//                }, $answersData);
+//                if (count($preparedAnswerData)) {
+//                    $question->answers()->createMany($preparedAnswerData);
+//                }
             DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
@@ -146,15 +150,15 @@ class SiteController extends Controller
                 'questions-'.$questionId => 'required',
             ]);
             Question::find($questionId)->update(['question' => $request->get('questions-' . $questionId)]);
-            $answers = $question->answers;
-            foreach ($answers as $answer)
-            {
-                $answerId = $answer['id'];
-                $request->validate([
-                    'answers-'.$answerId => 'required',
-                ]);
-                Answer::find($answerId)->update(['answer' => $request->get('answers-' . $answerId)]);
-            }
+//            $answers = $question->answers;
+//            foreach ($answers as $answer)
+//            {
+//                $answerId = $answer['id'];
+//                $request->validate([
+//                    'answers-'.$answerId => 'required',
+//                ]);
+//                Answer::find($answerId)->update(['answer' => $request->get('answers-' . $answerId)]);
+//            }
         }
         return redirect(Route('viewForms'))->with('success', 'Форма обновлёна!');
     }
@@ -177,5 +181,17 @@ class SiteController extends Controller
         $form = Form::find($id);
         $form->delete();
         return redirect(Route('viewForms'))->with('success', 'Форма удалёна');
+    }
+
+    public function deleteLead($id){
+        $answer = new Answer();
+        $answer_id = $answer::query()->where('lead_id', $id)->get('id');
+        foreach ($answer_id as $item){
+            $answerFind = $answer::findOrFail($item->id);
+            $answerFind->delete();
+        }
+        $lead = Lead::find($id);
+        $lead->delete();
+        return redirect(Route('viewLeads'))->with('success', 'Lead удалён');
     }
 }

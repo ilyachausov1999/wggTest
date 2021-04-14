@@ -12,7 +12,16 @@ class Lead extends Model
     public $table = 'leads';
     protected $fillable =
         [
-            'value',
-            'question_id',
+            'form_id',
         ];
+
+    public function forms()
+    {
+        return $this->belongsTo(Form::class);
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(Answer::class, 'lead_id', 'id');
+    }
 }

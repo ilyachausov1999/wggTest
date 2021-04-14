@@ -15,9 +15,8 @@ class CreateLeadsTable extends Migration
     {
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
-            $table->string('value');
-            $table->foreignId('question_id');
-            $table->foreign('question_id')->references('id')->on('questions');
+            $table->foreignId('form_id');
+            $table->foreign('form_id')->references('id')->on('forms');
             $table->timestamps();
         });
     }

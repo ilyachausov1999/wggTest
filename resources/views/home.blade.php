@@ -16,6 +16,7 @@
                         {{ Auth::user()->name }}{{ __(',добро пожаловать,вы вошли!') }}
                         <a class="nav-link" href="/home/create">{{ __('Добавть форму') }}</a>
                         <a class="nav-link" href="/home/view">{{ __('Посмотреть формы') }}</a>
+                        <a class="nav-link" href="/home/viewLeads">{{ __('Посмотреть leads') }}</a>
                 </div>
             </div>
         </div>

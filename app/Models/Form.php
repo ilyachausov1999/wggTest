@@ -25,4 +25,9 @@ class Form extends Model
     {
         return $this->hasMany(Question::class, 'form_id', 'id');
     }
+
+    public function leads()
+    {
+        return $this->hasMany(Lead::class, 'form_id', 'id');
+    }
 }

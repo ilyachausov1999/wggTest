@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
-Route::post('/add', [App\Http\Controllers\HomeController::class, 'add'])->name('add');
+Route::post('/createLead{id}', [App\Http\Controllers\HomeController::class, 'createLead'])->name('createLead');
 
 
 Auth::routes();
@@ -28,4 +28,8 @@ Route::get('/home/form{id}show', [App\Http\Controllers\SiteController::class, 's
 Route::get('/home/form{id}edit', [App\Http\Controllers\SiteController::class, 'edit'])->name('edit');
 Route::post('/home/form{id}update', [App\Http\Controllers\SiteController::class, 'update'])->name('update');
 Route::get('/home/form{id}delete', [App\Http\Controllers\SiteController::class, 'destroy'])->name('delete');
+
+Route::get('/home/viewLeads', [App\Http\Controllers\SiteController::class, 'viewLeads'])->name('viewLeads');
+Route::post('/home/delete{id}Lead', [App\Http\Controllers\SiteController::class, 'deleteLead'])->name('deleteLead');
+
 

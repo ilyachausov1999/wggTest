@@ -18,6 +18,8 @@ class CreateAnswersTable extends Migration
             $table->string('answer');
             $table->foreignId('question_id');
             $table->foreign('question_id')->references('id')->on('questions');
+            $table->foreignId('lead_id');
+            $table->foreign('lead_id')->references('id')->on('leads');
             $table->timestamps();
         });
     }

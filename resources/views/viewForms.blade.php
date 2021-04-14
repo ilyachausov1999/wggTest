@@ -10,9 +10,7 @@
     @endif
         <table class="table mt-3">
         <thead class="card-header">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Название формы</th>
+        <tr><th scope="col">Название формы</th>
             <th scope="col">Дата создания формы</th>
             <th scope="col">Actions</th>
         </tr>
@@ -20,7 +18,6 @@
         <tbody>
         @foreach ($forms as $form)
             <tr>
-                <th scope="row">{{$form->id}}</th>
                 <td>{{$form->name}}</td>
                 <td>{{$form->created_at}}</td>
                 <td class="table-buttons">
@@ -29,9 +26,11 @@
                     <a href="{{ route('delete', $form) }}" class="btn btn-sm btn-danger col-md-3">Удалить</a>
                 </td>
             </tr>
+
         @endforeach
         </tbody>
     </table>
+        {{ $forms->links('layouts.paginate') }}
 </div>
 
 

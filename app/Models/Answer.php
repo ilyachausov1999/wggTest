@@ -14,10 +14,16 @@ class Answer extends Model
         [
             'answer',
             'question_id',
+            'lead_id',
         ];
 
     public function questions()
     {
         return $this->belongsTo(Question::class, );
+    }
+
+    public function leads()
+    {
+        return $this->belongsTo(Lead::class, );
     }
 }

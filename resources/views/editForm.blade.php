@@ -25,9 +25,6 @@
                                     </div>
                                     @foreach($form->questions as $question)
                                         <p>Вопррос : <input type="text" name="questions-{{$question->getKey()}}" value="{{ $question->question}}" class="form-control" id="question"></p>
-                                        @foreach($question->answers as $answer)
-                                            <p>Ответ :  <input type="text" name="answers-{{$answer->getKey()}}" value="{{ $answer->answer }}" class="form-control" id="answer"></p>
-                                        @endforeach
                                     @endforeach
 
                                     <button type="submit" class="btn btn-sm btn-success">Отредактировать</button>
